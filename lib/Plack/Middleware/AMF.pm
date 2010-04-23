@@ -3,7 +3,7 @@ package Plack::Middleware::AMF;
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use parent "Plack::Middleware";
 
@@ -17,11 +17,11 @@ sub prepare_app {
 	my $self = shift;
 	
 	unless (defined $self->headers_handler) {
-		$self->headers_handler(\&default_headers_handler);
+		$self->headers_handler(\&_default_headers_handler);
 	}
 
 	unless (defined $self->message_handler) {
-		$self->message_handler(\&default_message_handler);
+		$self->message_handler(\&_default_message_handler);
 	}
 
 	if (ref $self->headers_handler ne 'CODE') {
@@ -71,9 +71,9 @@ sub _handle_amf {
 	return $res->finalize;
 }
 
-sub default_headers_handler {}
+sub _default_headers_handler {}
 
-sub default_message_handler {
+sub _default_message_handler {
 	my $message = shift;
 
 	my ($controller_name, $action_name) = split '\.', $message->target_uri;
@@ -87,6 +87,9 @@ sub default_message_handler {
 		return $controller->$action(@{ $message->value });
 	}	
 }
+
+1;
+__END__
 
 =head1 NAME
 
@@ -116,6 +119,12 @@ Enable this middleware to allow your Plack-based application to handle Flash Rem
 =head2 headers_handler
 
 =head2 message_handler
+
+=head1 METHOD
+
+=head2 prepare_app
+
+=head2 call
 
 =head1 AUTHOR
 
@@ -173,5 +182,3 @@ See http://dev.perl.org/licenses/ for more information.
 
 
 =cut
-
-1; # End of Plack::Middleware::AMF

@@ -15,6 +15,7 @@ lib/Plack/Middleware/AMF.pm
 Makefile.PL
 MANIFEST
 META.yml
+Plack-Middleware-AMF-0.01.tar.gz
 README
 t/00-load.t
 t/01-basic.t
